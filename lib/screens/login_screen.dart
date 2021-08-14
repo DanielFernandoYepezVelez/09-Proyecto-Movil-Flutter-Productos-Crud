@@ -1,0 +1,15 @@
+import 'package:flutter/material.dart';
+
+/* Widgets */
+import 'package:productos_app/widgets/widgets.dart';
+
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: AuthBackground(),
+    );
+  }
+}
