@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
 class AuthBackground extends StatelessWidget {
-  const AuthBackground({Key? key}) : super(key: key);
+  final Widget child;
+
+  const AuthBackground({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Colors.red,
       width: double.infinity,
       height: double.infinity,
       child: Stack(
-        children: [_PurpleBox()],
+        children: [
+          _PurpleBox(),
+          _HeaderIcon(),
+          this.child,
+        ],
       ),
     );
   }
@@ -57,9 +62,28 @@ class _Bubble extends StatelessWidget {
     return Container(
       width: 100,
       height: 100,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(100),
-        color: Color.fromRGBO(255, 255, 255, 0.05),
+      decoration: _formCircle(),
+    );
+  }
+
+  BoxDecoration _formCircle() {
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(100),
+      color: Color.fromRGBO(255, 255, 255, 0.05),
+    );
+  }
+}
+
+class _HeaderIcon extends StatelessWidget {
+  const _HeaderIcon({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        width: double.infinity,
+        margin: EdgeInsets.only(top: 30),
+        child: Icon(Icons.person_pin, color: Colors.white, size: 100),
       ),
     );
   }
