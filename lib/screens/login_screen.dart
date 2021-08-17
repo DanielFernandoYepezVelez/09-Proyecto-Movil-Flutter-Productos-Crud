@@ -48,15 +48,26 @@ class _LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
             TextFormField(
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.loginInputDecoration(
-                  hintText: 'dani.do@gmail.com',
-                  labelText: 'Correco Electrónico',
-                  prefixIcon: Icons.alternate_email_sharp),
+                hintText: 'dani.do@gmail.com',
+                labelText: 'Correco Electrónico',
+                prefixIcon: Icons.alternate_email_sharp,
+              ),
+              validator: (value) {
+                String pattern =
+                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                RegExp regExp = new RegExp(pattern);
+
+                return regExp.hasMatch(value ?? '')
+                    ? null
+                    : 'El Correo No Es Válido';
+              },
             ),
             SizedBox(height: 30),
             TextFormField(
@@ -64,9 +75,16 @@ class _LoginForm extends StatelessWidget {
               obscureText: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecorations.loginInputDecoration(
-                  hintText: '****',
-                  labelText: 'Contraseña',
-                  prefixIcon: Icons.lock_outline),
+                hintText: '****',
+                labelText: 'Contraseña',
+                prefixIcon: Icons.lock_outline,
+              ),
+              validator: (value) {
+                /* Yo Puedo Retornar Un Null O Un String */
+                return (value != null && value.length >= 6)
+                    ? null
+                    : 'La Contraseña Debe Ser De 6 Carácteres';
+              },
             ),
             SizedBox(height: 30),
             MaterialButton(
