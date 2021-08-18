@@ -6,7 +6,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: null,
+      child: Text('Hola Estoy En El Home'),
     );
   }
 }
