@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 
+/* Widgets */
+import 'package:productos_app/widgets/widgets.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Hola Estoy En El Home'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Productos'),
+        centerTitle: true,
+      ),
+      body: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (BuildContext context, int index) => ProductCard(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
     );
   }
 }
