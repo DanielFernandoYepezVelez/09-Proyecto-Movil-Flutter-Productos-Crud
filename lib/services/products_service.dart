@@ -10,14 +10,19 @@ import 'package:productos_app/models/models.dart';
 
 class ProductsService extends ChangeNotifier {
   bool isLoading = true;
-  final String _baseUrl = 'flutter-varios-a1946-default-rtdb.firebaseio.com';
   final List<ProductResponse> products = [];
+  final String _baseUrl = 'flutter-varios-a1946-default-rtdb.firebaseio.com';
 
   ProductsService() {
     this.loadProducts();
   }
 
-  Future loadProducts() async {
+  Future<List<ProductResponse>> loadProducts() async {
+    /* Flutter Y El Provider Es Inteligente PorQue Sabe Que El 
+    Cambio Fue En Una Propiedad, Entonces No Redibuja Nada */
+    this.isLoading = true;
+    notifyListeners();
+
     final url = Uri.https(_baseUrl, 'Products.json');
     final respuesta = await http.get(url);
 
@@ -41,6 +46,9 @@ class ProductsService extends ChangeNotifier {
       this.products.add(productTemp);
     });
 
-    print(this.products[0].name);
+    this.isLoading = false;
+    notifyListeners();
+
+    return this.products;
   }
 }
