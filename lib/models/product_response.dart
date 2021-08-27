@@ -1,15 +1,16 @@
 import 'dart:convert';
 
 class ProductResponse {
+  String? id;
   String name;
-  String? picture;
   double price;
   bool available;
-  String? id;
+  String? picture;
 
   ProductResponse({
-    required this.name,
+    this.id,
     this.picture,
+    required this.name,
     required this.price,
     required this.available,
   });
@@ -32,4 +33,13 @@ class ProductResponse {
         "price": price,
         "available": available == null ? null : available,
       };
+
+  /* Aquí me estoy creando un metodo para romper la referencia del objeto */
+  ProductResponse copy() => ProductResponse(
+        id: this.id,
+        name: this.name,
+        price: this.price,
+        picture: this.picture,
+        available: this.available,
+      );
 }

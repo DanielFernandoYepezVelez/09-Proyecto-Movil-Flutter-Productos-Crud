@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/* Models */
+import 'package:productos_app/models/models.dart';
+
 /* Screens */
 import 'package:productos_app/screens/screens.dart';
 
@@ -27,7 +30,12 @@ class HomeScreen extends StatelessWidget {
       body: ListView.builder(
         itemCount: productsService.products.length,
         itemBuilder: (BuildContext context, int index) => GestureDetector(
-          onTap: () => Navigator.pushNamed(context, 'product'),
+          onTap: () {
+            final ProductResponse productClick =
+                productsService.products[index];
+            productsService.selectedProduct = productClick.copy();
+            Navigator.pushNamed(context, 'product');
+          },
           child: ProductCard(product: productsService.products[index]),
         ),
       ),
