@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:productos_app/providers/product_form_provider.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+/* Provider */
+import 'package:productos_app/providers/providers.dart';
+
 /* Services */
-import 'package:productos_app/services/products_service.dart';
+import 'package:productos_app/services/services.dart';
 
 /* UI Input */
 import 'package:productos_app/ui/input_decoration.dart';
@@ -37,6 +40,7 @@ class _ProductScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           children: [
             Stack(
@@ -117,6 +121,11 @@ class _ProductForm extends StatelessWidget {
               SizedBox(height: 30),
               TextFormField(
                 initialValue: '${product.price}',
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^(\d+)?\.?\d{0,2}'),
+                  ),
+                ],
                 onChanged: (value) => (double.tryParse(value) == null)
                     ? product.price = 0
                     : product.price = double.parse(value),
@@ -131,9 +140,10 @@ class _ProductForm extends StatelessWidget {
                 value: product.available,
                 title: Text('Disponible'),
                 tileColor: Colors.indigo,
-                onChanged: (value) {
-                  /* TODO: Pendiente */
-                },
+                onChanged:
+                    /* (value) =>
+                    productFormProvider.updateAvailability(value), */
+                    productFormProvider.updateAvailability,
               ),
               SizedBox(height: 30),
             ],
