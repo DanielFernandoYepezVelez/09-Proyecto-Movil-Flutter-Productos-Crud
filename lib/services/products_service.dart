@@ -10,6 +10,7 @@ import 'package:productos_app/models/models.dart';
 
 class ProductsService extends ChangeNotifier {
   bool isLoading = true;
+  bool isSaving = false;
   ProductResponse? selectedProduct;
   final List<ProductResponse> products = [];
   final String _baseUrl = 'flutter-varios-a1946-default-rtdb.firebaseio.com';
@@ -51,5 +52,35 @@ class ProductsService extends ChangeNotifier {
     notifyListeners();
 
     return this.products;
+  }
+
+  Future saveOrCreateProduct(ProductResponse product) async {
+    isSaving = true;
+    notifyListeners();
+
+    if (product.id == null) {
+      /* I Need Create A Product */
+    } else {
+      /* I Am Updating A Product */
+      await this.updateProduct(product);
+    }
+
+    isSaving = false;
+    notifyListeners();
+  }
+
+  Future<String> updateProduct(ProductResponse product) async {
+    final url = Uri.https(_baseUrl, 'Products/${product.id}.json');
+    final decodeData = await http.put(url, body: product.toJson());
+    final respuesta = decodeData.body;
+
+/* Aqui Obtengo El Indice Donde El Id De Los Productos Coincidan */
+    final index =
+        this.products.indexWhere((element) => element.id == product.id);
+
+    this.products[index] = product;
+
+    print(respuesta);
+    return product.id!;
   }
 }
