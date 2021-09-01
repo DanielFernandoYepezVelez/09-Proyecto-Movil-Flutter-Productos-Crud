@@ -31,9 +31,8 @@ class HomeScreen extends StatelessWidget {
         itemCount: productsService.products.length,
         itemBuilder: (BuildContext context, int index) => GestureDetector(
           onTap: () {
-            final ProductResponse productClick =
-                productsService.products[index];
-            productsService.selectedProduct = productClick.copy();
+            productsService.selectedProduct =
+                productsService.products[index].copy();
             Navigator.pushNamed(context, 'product');
           },
           child: ProductCard(product: productsService.products[index]),
@@ -41,7 +40,11 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          productsService.selectedProduct =
+              new ProductResponse(name: '', price: 0, available: false);
+          Navigator.pushNamed(context, 'product');
+        },
       ),
     );
   }
