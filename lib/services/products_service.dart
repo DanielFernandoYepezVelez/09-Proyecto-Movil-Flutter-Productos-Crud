@@ -1,6 +1,7 @@
 /* Aquí Estamos Trabajando Con Las Peticiones http */
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:productos_app/models/models.dart';
 
 class ProductsService extends ChangeNotifier {
+  File? newPictureFile;
   bool isLoading = true;
   bool isSaving = false;
   ProductResponse? selectedProduct;
@@ -95,5 +97,12 @@ class ProductsService extends ChangeNotifier {
     this.products.add(product);
 
     return product.id!;
+  }
+
+  /* Aquí Estamos Trabajando Con La Imagenes */
+  void updateSelectedProductImage(String path) {
+    this.selectedProduct?.picture = path;
+    this.newPictureFile = File.fromUri(Uri(path: path));
+    notifyListeners();
   }
 }
