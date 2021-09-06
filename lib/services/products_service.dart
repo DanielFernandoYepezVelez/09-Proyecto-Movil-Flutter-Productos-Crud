@@ -105,4 +105,40 @@ class ProductsService extends ChangeNotifier {
     this.newPictureFile = File.fromUri(Uri(path: path));
     notifyListeners();
   }
+
+  Future<String?> uploadImage() async {
+    if (this.newPictureFile == null) return null;
+
+    this.isSaving = true;
+    notifyListeners();
+
+    /* Este Es Lo Mismo Que Uri.https() */
+    final url = Uri.parse(
+        'https://api.cloudinary.com/v1_1/dlulvgvuy/image/upload?upload_preset=rgj1pnsx');
+
+    /* Aquí Estoy Creando La Petición Post, Todavia No Se Esta Disparando */
+    final imageUploadRequest = http.MultipartRequest('POST', url);
+
+    /* Aquí Estoy definiendo el campo file donde se va a cargar la imagen (Campo Formulario) */
+    final file =
+        await http.MultipartFile.fromPath('file', this.newPictureFile!.path);
+
+    /* Aquí Estoy Adjuntando El File A La Petición POST */
+    imageUploadRequest.files.add(file);
+
+    /* Aquí Disparo Mi Petición Para Cloudinary */
+    final streamResponse = await imageUploadRequest.send();
+    final response = await http.Response.fromStream(streamResponse);
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      print('Algo Salio Mal Al Cargar La Imagen');
+      print(response.body);
+      return null;
+    }
+
+    this.newPictureFile = null;
+
+    final decodedData = json.decode(response.body);
+    return decodedData['secure_url'];
+  }
 }
