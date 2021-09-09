@@ -7,4 +7,5 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
   'home': (_) => HomeScreen(),
   'login': (_) => LoginScreen(),
   'product': (_) => ProductScreen(),
+  'register': (_) => RegisterScreen(),
 };
