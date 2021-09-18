@@ -14,7 +14,8 @@ class AuthService extends ChangeNotifier {
     /* Datos Del Post */
     final Map<String, dynamic> authData = {
       'email': email,
-      'password': password
+      'password': password,
+      'returnSecureToken': true
     };
 
     /* Estructurando La Dirección Url */
@@ -44,7 +45,8 @@ class AuthService extends ChangeNotifier {
     /* Datos Del Post */
     final Map<String, dynamic> authData = {
       'email': email,
-      'password': password
+      'password': password,
+      'returnSecureToken': true
     };
 
     /* Estructurando La Dirección Url */

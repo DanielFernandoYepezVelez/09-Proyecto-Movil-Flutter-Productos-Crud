@@ -35,8 +35,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: NotificationsService.messengerKey,
       title: 'Productos App',
-      initialRoute: 'checking',
+      initialRoute: 'login',
       routes: appRoutes,
       theme: tema,
     );

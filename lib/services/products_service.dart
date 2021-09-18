@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /* Models */
 import 'package:productos_app/models/models.dart';
@@ -17,6 +18,8 @@ class ProductsService extends ChangeNotifier {
   final List<ProductResponse> products = [];
   final String _baseUrl = 'flutter-varios-a1946-default-rtdb.firebaseio.com';
 
+  final storage = new FlutterSecureStorage();
+
   ProductsService() {
     this.loadProducts();
   }
@@ -27,7 +30,8 @@ class ProductsService extends ChangeNotifier {
     this.isLoading = true;
     notifyListeners();
 
-    final url = Uri.https(_baseUrl, 'Products.json');
+    final url = Uri.https(_baseUrl, 'Products.json',
+        {'auth': await this.storage.read(key: 'token') ?? ''});
     final respuesta = await http.get(url);
 
     // print('AQUI YO YA TENGO UN STRING => ${respuesta.body}');
@@ -73,7 +77,9 @@ class ProductsService extends ChangeNotifier {
   }
 
   Future<String> updateProduct(ProductResponse product) async {
-    final url = Uri.https(_baseUrl, 'Products/${product.id}.json');
+    final url = Uri.https(_baseUrl, 'Products/${product.id}.json',
+        {'auth': await this.storage.read(key: 'token') ?? ''});
+
     final decodeData = await http.put(url, body: product.toJson());
     final respuesta = decodeData.body;
 
@@ -88,7 +94,9 @@ class ProductsService extends ChangeNotifier {
   }
 
   Future<String> createProduct(ProductResponse product) async {
-    final url = Uri.https(_baseUrl, 'Products.json');
+    final url = Uri.https(_baseUrl, 'Products.json',
+        {'auth': await this.storage.read(key: 'token') ?? ''});
+
     final decodeData = await http.post(url, body: product.toJson());
     final respuesta = json.decode(decodeData.body);
 
