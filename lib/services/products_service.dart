@@ -42,6 +42,9 @@ class ProductsService extends ChangeNotifier {
     Una Clave Tipo String Y Una Respuesta Dinámica */
     final Map<String, dynamic> productsMap = json.decode(respuesta.body);
 
+    /* Validación Para Evitar El Error, Del Value En El ForEach() */
+    if (productsMap['error'] != null) return [];
+
     // print('AQUI YO YA TENGO UN MAPA => $productsMap');
 
     /* 1. Es Más Facil Iterar Listas Que Mapas, Este Mapa Se Debe Convertir En Una Lista.
@@ -89,7 +92,7 @@ class ProductsService extends ChangeNotifier {
 
     this.products[index] = product;
 
-    print(respuesta);
+    // print(respuesta);
     return product.id!;
   }
 
@@ -139,8 +142,8 @@ class ProductsService extends ChangeNotifier {
     final response = await http.Response.fromStream(streamResponse);
 
     if (response.statusCode != 200 && response.statusCode != 201) {
-      print('Algo Salio Mal Al Cargar La Imagen');
-      print(response.body);
+      // print('Algo Salio Mal Al Cargar La Imagen');
+      // print(response.body);
       return null;
     }
 
