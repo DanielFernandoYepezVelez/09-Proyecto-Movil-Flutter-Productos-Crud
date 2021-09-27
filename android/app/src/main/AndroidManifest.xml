@@ -1,8 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.productos_app">
+    package="com.nextappoficial.productsApp">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="productos_app"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Productos"
+        android:usesCleartextTraffic="true"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
