@@ -39,9 +39,9 @@ android {
     }
 
     defaultConfig {
-        //com.example.productos_app
+        //com.nextappoficial.productsApp
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.nextappoficial.productsApp"
+        applicationId "com.example.productos_app"
         minSdkVersion 18
         targetSdkVersion 30
         versionCode 2

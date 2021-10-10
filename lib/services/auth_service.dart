@@ -31,6 +31,8 @@ class AuthService extends ChangeNotifier {
     /* Obtengo La Respuesta, Que Es Un String Y La Decodifico A Un Mapa */
     final Map<String, dynamic> decodedResp = json.decode(respuesta.body);
 
+    // print('La Respuesta De Lo Que Me Retorna Firebase register $decodedResp');
+
     if (decodedResp.containsKey('idToken')) {
       /* Debemos Guardar El Token En Un Lugar Seguro */
       await this.storage.write(key: 'token', value: decodedResp['idToken']);
@@ -62,10 +64,10 @@ class AuthService extends ChangeNotifier {
     /* Obtengo La Respuesta, Que Es Un String Y La Decodifico A Un Mapa */
     final Map<String, dynamic> decodedResp = json.decode(respuesta.body);
 
-    print(decodedResp);
+    // print('La Respuesta De Lo Que Me Retorna Firebase login $decodedResp');
 
     if (decodedResp.containsKey('idToken')) {
-      /* Debemos Guardar El Token En Un Lugar Seguro */
+      /* Debemos Guardar El Token En Un Lugar Seguro (Secure Storage) */
       await this.storage.write(key: 'token', value: decodedResp['idToken']);
       // print(decodedResp['idToken']);
       return null;

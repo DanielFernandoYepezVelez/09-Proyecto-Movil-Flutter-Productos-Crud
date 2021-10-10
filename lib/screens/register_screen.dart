@@ -132,6 +132,7 @@ class _LoginForm extends StatelessWidget {
                   ? null
                   : () async {
                       FocusScope.of(context).unfocus();
+
                       final authService =
                           Provider.of<AuthService>(context, listen: false);
 
@@ -143,10 +144,13 @@ class _LoginForm extends StatelessWidget {
                       final String? errorMessage = await authService.createUser(
                           loginForm.email, loginForm.password);
 
+                      // print(errorMessage);
+
                       if (errorMessage == null) {
                         Navigator.pushReplacementNamed(context, 'home');
                       } else {
-                        print(errorMessage);
+                        // print(errorMessage);
+                        NotificationsService.showSnackbar(errorMessage);
                         loginForm.isLoading = false;
                       }
                     },
