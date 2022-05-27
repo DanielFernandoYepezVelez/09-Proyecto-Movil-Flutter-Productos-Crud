@@ -36,10 +36,10 @@ class ProductResponse {
 
   /* Aquí me estoy creando un metodo para romper la referencia del objeto */
   ProductResponse copy() => ProductResponse(
-        id: this.id,
-        name: this.name,
-        price: this.price,
-        picture: this.picture,
-        available: this.available,
+        id: id,
+        name: name,
+        price: price,
+        picture: picture,
+        available: available,
       );
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /* Screens */
-import 'package:productos_app/screens/screens.dart';
+import 'package:flutter_productos_crud/screens/screens.dart';
 
 final Map<String, Widget Function(BuildContext)> appRoutes = {
   'checking': (_) => CheckAuthScreen(),

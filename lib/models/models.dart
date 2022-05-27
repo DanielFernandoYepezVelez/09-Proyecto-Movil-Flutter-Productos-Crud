@@ -1,1 +1,1 @@
-export 'package:productos_app/models/product_response.dart';
+export 'package:flutter_productos_crud/models/product_response.dart';

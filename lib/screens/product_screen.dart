@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 /* Provider */
-import 'package:productos_app/providers/providers.dart';
+import 'package:flutter_productos_crud/providers/providers.dart';
 
 /* Services */
-import 'package:productos_app/services/services.dart';
+import 'package:flutter_productos_crud/services/services.dart';
 
 /* UI Input */
-import 'package:productos_app/ui/input_decoration.dart';
+import 'package:flutter_productos_crud/ui/input_decoration.dart';
 
 /* Widgets */
-import 'package:productos_app/widgets/widgets.dart';
+import 'package:flutter_productos_crud/widgets/widgets.dart';
 
 class ProductScreen extends StatelessWidget {
   const ProductScreen({Key? key}) : super(key: key);
@@ -29,13 +30,48 @@ class ProductScreen extends StatelessWidget {
   }
 }
 
-class _ProductScreenBody extends StatelessWidget {
+class _ProductScreenBody extends StatefulWidget {
   const _ProductScreenBody({
     Key? key,
     required this.productService,
   }) : super(key: key);
 
   final ProductsService productService;
+
+  @override
+  State<_ProductScreenBody> createState() => _ProductScreenBodyState();
+}
+
+class _ProductScreenBodyState extends State<_ProductScreenBody> {
+  NativeAd? _nativeVideoAd;
+  bool _isLoadedVideoNative = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVideoNativeAd();
+  }
+
+  void _loadVideoNativeAd() {
+    _nativeVideoAd = NativeAd(
+      // adUnitId: 'ca-app-pub-3940256099942544/1044960115',
+      adUnitId: 'ca-app-pub-8702651755109746/4026677591',
+      factoryId: 'listTile',
+      request: const AdRequest(),
+      listener: NativeAdListener(onAdLoaded: (ad) {
+        /* print('Video Ad Loaded Successfully'); */
+        setState(() {
+          _isLoadedVideoNative = true;
+        });
+      }, onAdFailedToLoad: (ad, error) {
+        /* print(
+            'Actually Ad Video Failed To Load ${error.message}, ${error.code}'); */
+        ad.dispose();
+      }),
+    );
+
+    _nativeVideoAd!.load();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +84,8 @@ class _ProductScreenBody extends StatelessWidget {
           children: [
             Stack(
               children: [
-                ProductImage(url: productService.selectedProduct!.picture),
+                ProductImage(
+                    url: widget.productService.selectedProduct!.picture),
                 Positioned(
                   top: 60,
                   left: 20,
@@ -72,6 +109,7 @@ class _ProductScreenBody extends StatelessWidget {
                     ),
                     onPressed: () async {
                       final picker = new ImagePicker();
+
                       final XFile? pickedFile = await picker.pickImage(
                         imageQuality: 100,
                         // source: ImageSource.gallery,
@@ -83,12 +121,24 @@ class _ProductScreenBody extends StatelessWidget {
                         return;
                       }
 
-                      productService
+                      widget.productService
                           .updateSelectedProductImage(pickedFile.path);
                     },
                   ),
                 ),
               ],
+            ),
+            Container(
+              height: 300,
+              width: double.infinity,
+              color: Colors.black12,
+              alignment: _isLoadedVideoNative ? null : Alignment.center,
+              child: !_isLoadedVideoNative
+                  ? FadeInImage(
+                      placeholder: AssetImage('assets/giphy.gif'),
+                      image: AssetImage('assets/giphy.gif'),
+                    )
+                  : AdWidget(ad: _nativeVideoAd!),
             ),
             _ProductForm(),
             SizedBox(height: 100),
@@ -97,19 +147,21 @@ class _ProductScreenBody extends StatelessWidget {
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
-        child: productService.isSaving
+        child: widget.productService.isSaving
             ? CircularProgressIndicator(color: Colors.white)
             : Icon(Icons.save_outlined),
-        onPressed: productService.isSaving
+        onPressed: widget.productService.isSaving
             ? null
             : () async {
                 if (!productFormProvider.isValidForm()) return;
 
-                final String? imageUrl = await productService.uploadImage();
+                final String? imageUrl =
+                    await widget.productService.uploadImage();
                 if (imageUrl != null)
                   productFormProvider.product.picture = imageUrl;
 
                 await this
+                    .widget
                     .productService
                     .saveOrCreateProduct(productFormProvider.product);
               },

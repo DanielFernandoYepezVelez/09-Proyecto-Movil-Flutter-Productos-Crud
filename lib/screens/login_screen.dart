@@ -1,20 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 /* Services */
-import 'package:productos_app/services/services.dart';
+import 'package:flutter_productos_crud/services/services.dart';
 
 /* Provider */
-import 'package:productos_app/providers/login_form_provider.dart';
+import 'package:flutter_productos_crud/providers/login_form_provider.dart';
 
 /* Widgets */
-import 'package:productos_app/widgets/widgets.dart';
+import 'package:flutter_productos_crud/widgets/widgets.dart';
 
 /* UI InputDecorations */
-import 'package:productos_app/ui/input_decoration.dart';
+import 'package:flutter_productos_crud/ui/input_decoration.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  NativeAd? _nativeVideoAd;
+  bool _isLoadedVideoNative = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVideoNativeAd();
+  }
+
+  void _loadVideoNativeAd() {
+    _nativeVideoAd = NativeAd(
+      // adUnitId: 'ca-app-pub-3940256099942544/1044960115',
+      adUnitId: 'ca-app-pub-8702651755109746/4026677591',
+      factoryId: 'listTile',
+      request: const AdRequest(),
+      listener: NativeAdListener(onAdLoaded: (ad) {
+        /* print('Video Ad Loaded Successfully'); */
+        setState(() {
+          _isLoadedVideoNative = true;
+        });
+      }, onAdFailedToLoad: (ad, error) {
+        /* print(
+            'Actually Ad Video Failed To Load ${error.message}, ${error.code}'); */
+        ad.dispose();
+      }),
+    );
+
+    _nativeVideoAd!.load();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +63,18 @@ class LoginScreen extends StatelessWidget {
               CardContainer(
                 child: Column(
                   children: [
+                    Container(
+                      height: 300,
+                      width: double.infinity,
+                      color: Colors.black12,
+                      alignment: _isLoadedVideoNative ? null : Alignment.center,
+                      child: !_isLoadedVideoNative
+                          ? FadeInImage(
+                              placeholder: AssetImage('assets/giphy.gif'),
+                              image: AssetImage('assets/giphy.gif'),
+                            )
+                          : AdWidget(ad: _nativeVideoAd!),
+                    ),
                     SizedBox(height: 10),
                     Text('Login', style: Theme.of(context).textTheme.headline4),
                     SizedBox(height: 30),
@@ -64,9 +112,14 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class _LoginForm extends StatelessWidget {
+class _LoginForm extends StatefulWidget {
   const _LoginForm({Key? key}) : super(key: key);
 
+  @override
+  State<_LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<_LoginForm> {
   @override
   Widget build(BuildContext context) {
     final loginForm = Provider.of<LoginFormProvider>(context);

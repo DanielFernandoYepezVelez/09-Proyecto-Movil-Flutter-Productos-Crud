@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 /* Routes */
-import 'package:productos_app/routes/routes.dart';
+import 'package:flutter_productos_crud/routes/routes.dart';
 
 /* Theme App */
-import 'package:productos_app/theme/theme.dart';
+import 'package:flutter_productos_crud/theme/theme.dart';
 
 /* Services */
-import 'package:productos_app/services/services.dart';
+import 'package:flutter_productos_crud/services/services.dart';
 
-void main() => runApp(AppState());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
+  runApp(const AppState());
+}
 
 class AppState extends StatelessWidget {
   const AppState({Key? key}) : super(key: key);
@@ -33,7 +38,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       scaffoldMessengerKey: NotificationsService.messengerKey,
-      title: 'Productos App',
+      title: 'Productos',
       initialRoute: 'login',
       routes: appRoutes,
       theme: tema,

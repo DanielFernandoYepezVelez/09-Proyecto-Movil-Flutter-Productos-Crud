@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /* Models */
-import 'package:productos_app/models/models.dart';
+import 'package:flutter_productos_crud/models/models.dart';
 
 class ProductsService extends ChangeNotifier {
   File? newPictureFile;

@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 
 /* Models */
-import 'package:productos_app/models/models.dart';
+import 'package:flutter_productos_crud/models/models.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductResponse product;

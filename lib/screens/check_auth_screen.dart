@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 /* Services */
-import 'package:productos_app/services/services.dart';
+import 'package:flutter_productos_crud/services/services.dart';
 
 /* Login Screen */
-import 'package:productos_app/screens/screens.dart';
+import 'package:flutter_productos_crud/screens/screens.dart';
 
 class CheckAuthScreen extends StatelessWidget {
   const CheckAuthScreen({Key? key}) : super(key: key);
