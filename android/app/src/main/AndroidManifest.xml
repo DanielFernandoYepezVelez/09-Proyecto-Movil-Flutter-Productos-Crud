@@ -9,7 +9,7 @@
        <!-- ca-app-pub-3940256099942544~3347511713 Test APPLICATION_ID -->
        <meta-data
            android:name="com.google.android.gms.ads.APPLICATION_ID"
-           android:value="ca-app-pub-8702651755109746~6420805012"/>
+           android:value="ca-app-pub-2118916369098036~2674384706"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
